@@ -10,15 +10,26 @@
 #import "NSObject+IXExtension.h"
 #import <objc/runtime.h>
 
-/// 在 view 层级中找到指定 class 的 view
-NS_INLINE UIView *IXFindCustomViewInView(NSArray <Class> *customViewClasses, UIView *containerView) {
+typedef UIView *(^IXViewHitTestBlock)(UIView *view);
+
+
+/**
+ 在 view 层级中找到指定 class 的 container view 的响应接受者
+
+ @param customViewClasses 自定义 class
+ @param containerView 容器 view
+ @param hitTestBlock 是否接收响应事件
+ @return 如果找到就返回一个 view，没找到则返回 nil。
+ */
+NS_INLINE UIView *IXFindTouchEventReceiverForCustomViewInView(NSArray <Class> *customViewClasses, UIView *containerView, IXViewHitTestBlock hitTestBlock) {
    
     for (UIView *subview in containerView.subviews) {
         
-        if ([customViewClasses containsObject:subview.class]) {
-            return subview;
+        if ([customViewClasses containsObject:subview.class] && hitTestBlock(subview)) { // 是自定义 view，并且能接收响应
+            return hitTestBlock(subview);
         } else {
-            UIView *theView = IXFindCustomViewInView(customViewClasses, subview);
+            // 如果不符合条件，就从 subview 开始找
+            UIView *theView = IXFindTouchEventReceiverForCustomViewInView(customViewClasses, subview, hitTestBlock);
             if (theView) {
                 return theView;
             }
@@ -28,6 +39,7 @@ NS_INLINE UIView *IXFindCustomViewInView(NSArray <Class> *customViewClasses, UIV
     return nil;
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////
 
 @implementation UINavigationBar (IXTouch)
 
@@ -60,14 +72,11 @@ static NSMutableArray <Class> *m_registeredCustomTouchViewClasses = nil;
         // 3. 如果一直没找到，就什么都不做，继续往下执行
         // 4. 如果最终找到了，就调用 hitTest:withEvent: 方法，询问是否有可响应的 view
         
-        UIView *view = IXFindCustomViewInView(m_registeredCustomTouchViewClasses, self);
-        if (view) {
-            UIView *finalView = [view hitTest:[self convertPoint:point toView:view] withEvent:event];
-            if (finalView) {
-                return finalView;
-            }
-            
-        }
+        UIView *view = IXFindTouchEventReceiverForCustomViewInView(m_registeredCustomTouchViewClasses, self, ^(UIView *aView){
+            return [aView hitTest:[self convertPoint:point toView:aView] withEvent:event];
+        });
+        
+        if (view) return view;
     }
     
     return [self ix_hitTest:point withEvent:event];

@@ -17,6 +17,5 @@
 
 + (void)ix_exchangeInstanceMethod1:(SEL)method1 method2:(SEL)method2;
 
-+ (void)ix_exchangeClassMethod1:(SEL)method1 method2:(SEL)method2;
 
 @end
