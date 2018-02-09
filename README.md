@@ -35,7 +35,7 @@
 
 3.在 iOS 11 下，系统的导航栏有一个叫做 `_UINavigationBarContentView` 的子控件，会把导航栏上的点击事件拦截掉，所以我们需要从 UINavigationBar 的 view 层级中找到我们的 custom view，并在  UINavigationBar 的 `hitTest:withEvent:` 中将点击事件传给这个 custom view，这样我们的 button 就能接收点击事件了。
 
-```
+``` Objective-C
 NS_INLINE UIView *IXFindIXOutsideTouchViewInView(UIView *view) {
     for (UIView *subview in view.subviews) {
 
