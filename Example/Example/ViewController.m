@@ -20,7 +20,10 @@
     
     // 自定义返回按钮
     if (self.navigationController.viewControllers.count > 1) {
-        self.navigationItem.leftBarButtonItem = [UIBarButtonItem leftItemWithImage:[UIImage imageNamed:@"navigationbar_back_black"] imageEdgeInsets:UIEdgeInsetsZero target:self action:@selector(pop)];
+        self.navigationItem.leftBarButtonItem = [UIBarButtonItem leftItemWithImage:[UIImage imageNamed:@"navigationbar_back_black"]
+                                                                   imageEdgeInsets:UIEdgeInsetsZero
+                                                                            target:self
+                                                                            action:@selector(pop)];
     }
     
 }
