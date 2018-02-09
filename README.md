@@ -167,7 +167,7 @@ static NSMutableArray <Class> *m_registeredCustomTouchViewClasses = nil;
 @end
 ```
 
-当需要为自定义导航栏按钮拦截点击事件时，只需要注册这个 view 的 class 就行了。
+当需要为自定义导航栏按钮拦截点击事件时，只需要注册这个 view 的 class 就行了。而且，如果你在导航上使用了多个不同类的 custom view，会按照注册先后顺序进行询问，只有最先注册的而且能做出响应的（响应范围合法）才会接收到点击事件。
 
 将上面几个步骤合起来，再用 UIBarButtonItem 的 category 进行封装，就是这样的效果：
 
