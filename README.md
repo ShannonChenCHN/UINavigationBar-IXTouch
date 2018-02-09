@@ -206,3 +206,9 @@ self.navigationItem.leftBarButtonItem = [UIBarButtonItem leftItemWithImage:[UIIm
                                                                     target:self
                                                                     action:@selector(pop)];
 ```
+
+### 参考
+
+- [Automattic/Simplenote/Classes/SPOutsideTouchView.h](https://github.com/Automattic/simplenote-ios/blob/b43ffb63ae188fe263bf7419e44b7075ea7ddf22/Simplenote/Classes/SPOutsideTouchView.h)
+- [Method Swizzling - NSHipster](http://nshipster.cn/method-swizzling/)
+- [史上最详细的iOS之事件的传递和响应机制-原理篇](https://www.jianshu.com/p/2e074db792ba)
